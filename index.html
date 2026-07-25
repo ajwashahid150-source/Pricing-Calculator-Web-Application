@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing Calculator | Premium Estimate Tool</title>
+
+    <!-- Bootstrap 5 CSS (CDN) -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons (CDN) -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- ==============================
+         ANIMATED BACKGROUND BLOBS
+    =============================== -->
+    <div class="bg-blob blob-one" aria-hidden="true"></div>
+    <div class="bg-blob blob-two" aria-hidden="true"></div>
+    <div class="bg-blob blob-three" aria-hidden="true"></div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+
+    <main class="app-shell">
+        <div class="container py-4 py-md-5">
+
+            <!-- ==============================
+                 PAGE HEADER
+            =============================== -->
+            <header class="text-center mb-4 mb-md-5 fade-in-down">
+                <span class="eyebrow"><i class="bi bi-calculator-fill"></i> PRICING TOOL</span>
+                <h1 class="app-title">Pricing Calculator</h1>
+                <p class="app-subtitle">
+                    Enter your product details and get an instant, itemized cost breakdown —
+                    subtotal, discount, tax, and final total — calculated live in your browser.
+                </p>
+            </header>
+
+            <div class="row g-4 justify-content-center">
+
+                <!-- ==============================
+                     FORM CARD (INPUTS)
+                ================================= -->
+                <div class="col-12 col-lg-6">
+                    <section class="glass-card form-card h-100 fade-in-up" aria-labelledby="formHeading">
+                        <div class="card-heading">
+                            <i class="bi bi-pencil-square"></i>
+                            <h2 id="formHeading">Product Details</h2>
+                        </div>
+
+                        <form id="pricingForm" novalidate>
+
+                            <!-- Product Name -->
+                            <div class="input-group-custom mb-3">
+                                <label for="productName" class="form-label-custom">
+                                    Product Name
+                                </label>
+                                <div class="input-icon-wrap">
+                                    <i class="bi bi-box-seam input-icon"></i>
+                                    <input
+                                        type="text"
+                                        class="form-control-custom"
+                                        id="productName"
+                                        placeholder="e.g. Wireless Headphones"
+                                        required
+                                        autocomplete="off"
+                                    />
+                                </div>
+                                <div class="error-message" id="error-productName">
+                                    Please enter a product name.
+                                </div>
+                            </div>
+
+                            <!-- Product Price -->
+                            <div class="input-group-custom mb-3">
+                                <label for="productPrice" class="form-label-custom">
+                                    Product Price
+                                </label>
+                                <div class="input-icon-wrap">
+                                    <i class="bi bi-currency-dollar input-icon"></i>
+                                    <input
+                                        type="number"
+                                        class="form-control-custom"
+                                        id="productPrice"
+                                        placeholder="e.g. 49.99"
+                                        min="0.01"
+                                        step="0.01"
+                                        required
+                                    />
+                                </div>
+                                <div class="error-message" id="error-productPrice">
+                                    Price must be a number greater than 0.
+                                </div>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="input-group-custom mb-3">
+                                <label for="quantity" class="form-label-custom">
+                                    Quantity
+                                </label>
+                                <div class="input-icon-wrap">
+                                    <i class="bi bi-stack input-icon"></i>
+                                    <input
+                                        type="number"
+                                        class="form-control-custom"
+                                        id="quantity"
+                                        placeholder="e.g. 2"
+                                        min="1"
+                                        step="1"
+                                        required
+                                    />
+                                </div>
+                                <div class="error-message" id="error-quantity">
+                                    Quantity must be a whole number greater than 0.
+                                </div>
+                            </div>
+
+                            <!-- Discount + Tax side by side -->
+                            <div class="row g-3 mb-2">
+                                <div class="col-6">
+                                    <div class="input-group-custom">
+                                        <label for="discount" class="form-label-custom">
+                                            Discount (%)
+                                        </label>
+                                        <div class="input-icon-wrap">
+                                            <i class="bi bi-tag-fill input-icon"></i>
+                                            <input
+                                                type="number"
+                                                class="form-control-custom"
+                                                id="discount"
+                                                placeholder="0"
+                                                min="0"
+                                                max="100"
+                                                step="0.01"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="error-message" id="error-discount">
+                                            Enter a value between 0 and 100.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="input-group-custom">
+                                        <label for="tax" class="form-label-custom">
+                                            Tax (%)
+                                        </label>
+                                        <div class="input-icon-wrap">
+                                            <i class="bi bi-receipt input-icon"></i>
+                                            <input
+                                                type="number"
+                                                class="form-control-custom"
+                                                id="tax"
+                                                placeholder="0"
+                                                min="0"
+                                                max="100"
+                                                step="0.01"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="error-message" id="error-tax">
+                                            Enter a value between 0 and 100.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
+                                <button type="submit" class="btn-ripple btn-primary-custom flex-fill" id="calculateBtn" disabled>
+                                    <span class="btn-content">
+                                        <i class="bi bi-lightning-charge-fill"></i>
+                                        <span id="calculateBtnText">Calculate Total</span>
+                                    </span>
+                                    <span class="btn-spinner d-none">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Calculating...
+                                    </span>
+                                </button>
+
+                                <button type="button" class="btn-ripple btn-secondary-custom" id="resetBtn">
+                                    <span class="btn-content">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                        Reset
+                                    </span>
+                                </button>
+                            </div>
+
+                            <p class="keyboard-hint">
+                                <i class="bi bi-keyboard"></i> Tip: press <kbd>Enter</kbd> to calculate instantly.
+                            </p>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- ==============================
+                     RESULTS CARD (OUTPUT)
+                ================================= -->
+                <div class="col-12 col-lg-6">
+                    <section class="glass-card results-card h-100" aria-labelledby="resultsHeading">
+                        <div class="card-heading">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <h2 id="resultsHeading">Cost Breakdown</h2>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="emptyState" class="empty-state">
+                            <i class="bi bi-clipboard-data"></i>
+                            <p>Fill in the form and hit <strong>Calculate Total</strong><br />to see your breakdown here.</p>
+                        </div>
+
+                        <!-- Results Content (hidden until calculated) -->
+                        <div id="resultsContent" class="results-content d-none">
+
+                            <div class="result-row">
+                                <span class="result-label"><i class="bi bi-box-seam"></i> Product</span>
+                                <span class="result-value" id="resProductName">—</span>
+                            </div>
+
+                            <div class="result-row">
+                                <span class="result-label"><i class="bi bi-currency-dollar"></i> Unit Price</span>
+                                <span class="result-value" id="resProductPrice">$0.00</span>
+                            </div>
+
+                            <div class="result-row">
+                                <span class="result-label"><i class="bi bi-stack"></i> Quantity</span>
+                                <span class="result-value" id="resQuantity">0</span>
+                            </div>
+
+                            <hr class="result-divider" />
+
+                            <div class="result-row">
+                                <span class="result-label"><i class="bi bi-plus-circle"></i> Subtotal</span>
+                                <span class="result-value" id="resSubtotal">$0.00</span>
+                            </div>
+
+                            <div class="result-row result-row--negative">
+                                <span class="result-label"><i class="bi bi-tag-fill"></i> Discount Amount</span>
+                                <span class="result-value" id="resDiscountAmount">− $0.00</span>
+                            </div>
+
+                            <div class="result-row result-row--positive">
+                                <span class="result-label"><i class="bi bi-receipt"></i> Tax Amount</span>
+                                <span class="result-value" id="resTaxAmount">+ $0.00</span>
+                            </div>
+
+                            <!-- Final Total Highlight Card -->
+                            <div class="final-total-card">
+                                <span class="final-total-label">
+                                    <i class="bi bi-check-circle-fill"></i> Final Total
+                                </span>
+                                <span class="final-total-value" id="resFinalTotal">$0.00</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+
+            <!-- ==============================
+                 FOOTER
+            =============================== -->
+            <footer class="text-center mt-5 pb-3">
+                <p class="footer-text">
+                    Built with HTML5, CSS3, Bootstrap 5 &amp; Vanilla JavaScript — client-side only, no data leaves your browser.
+                </p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS Bundle (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
